@@ -1,8 +1,10 @@
 package ru.dravn.reminder;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -13,10 +15,8 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 
-import java.text.DateFormat;
-import java.text.Format;
+import java.util.Date;
 import java.util.UUID;
-import java.util.zip.DataFormatException;
 
 /**
  * Created by Jeka on 15.03.2018.
@@ -25,6 +25,8 @@ import java.util.zip.DataFormatException;
 public class RemindFragment extends Fragment{
 
     private static final String ARG_REMIND_ID = "remind_id";
+    private static final String DIALOG_DATA = "DialogData";
+    private static final int REQUEST_DATA  = 0;
 
     private Remind mRemind;
     private EditText mTitleField;
@@ -40,6 +42,23 @@ public class RemindFragment extends Fragment{
          fragment.setArguments(args);
          return fragment;
      }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(resultCode != Activity.RESULT_OK)
+        {
+            return;
+        }
+
+        if(requestCode == REQUEST_DATA)
+        {
+            Date date = (Date) data
+                    .getSerializableExtra(DatePickerFragment.EXTRA_DATA);
+            mRemind.setDate(date);
+            updateData();
+        }
+    }
 
 
     @Override
@@ -76,8 +95,16 @@ public class RemindFragment extends Fragment{
 
 
         mDataButton = view.findViewById(R.id.remind_data);
-        mDataButton.setText(mRemind.getDate().toString());
-        mDataButton.setEnabled(false);
+        updateData();
+        mDataButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager fm = getFragmentManager();
+                DatePickerFragment dialog = DatePickerFragment.newInstance(mRemind.getDate());
+                dialog.setTargetFragment(RemindFragment.this,REQUEST_DATA);
+                dialog.show(fm, DIALOG_DATA);
+            }
+        });
 
         mSolvedCheckBox = view.findViewById(R.id.remind_solved);
         mSolvedCheckBox.setChecked(mRemind.isSolved());
@@ -91,5 +118,10 @@ public class RemindFragment extends Fragment{
         });
 
         return view;
+    }
+
+
+    private void updateData() {
+        mDataButton.setText(mRemind.getDate().toString());
     }
 }

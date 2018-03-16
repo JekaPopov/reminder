@@ -1,9 +1,10 @@
 <resources>
-    <string name="app_name">Reminder</string>
+    <string name="app_name">Напоминалка</string>
     <string name="action_settings">Settings</string>
     <string name="remind_title_hint">Введите напоминание</string>
 
     <string name="remind_title_label">Напомнинание</string>
     <string name="remind_details_label">Детали</string>
     <string name="remind_solved_label">Выполнено?</string>
+    <string name="data_picker_title">Дата</string>
 </resources>

@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
 
 import java.util.List;
 import java.util.UUID;
@@ -17,7 +18,7 @@ import java.util.UUID;
  * Created by Jeka on 16.03.2018.
  */
 
-public class RemindPagerActivity extends FragmentActivity {
+public class RemindPagerActivity extends AppCompatActivity {
 
     private static final String EXTRA_REMIND_ID = "ru.dravn.reminder.remind_id";
 
